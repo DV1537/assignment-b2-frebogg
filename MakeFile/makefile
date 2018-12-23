@@ -1,0 +1,2 @@
+TestRule: Uppgift_B2/main.cpp
+	g++ -g Uppgift_B2/main.cpp Uppgift_B2/coordinate.cpp Uppgift_B2/line.cpp Uppgift_B2/point.cpp Uppgift_B2/polygon.cpp Uppgift_B2/shape.cpp Uppgift_B2/triangle.cpp Uppgift_B2/functions.cpp Uppgift_B2/figure.cpp -o prog.exe -std=c++11 -static-libgcc -static-libstdc++ -pedantic-errors
