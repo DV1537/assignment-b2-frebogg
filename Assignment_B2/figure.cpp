@@ -1,6 +1,6 @@
 #include "figure.h"
 
-void Figure::AddShape(Shape *sArr)
+void Figure::AddShape(Shape *s)
 {
     amountOfShapes += 1;
     Shape **tempShapes = new Shape *[amountOfShapes];
@@ -9,7 +9,7 @@ void Figure::AddShape(Shape *sArr)
     {
         tempShapes[i] = shapes[i];
     }
-    tempShapes[amountOfShapes - 1] = sArr;
+    tempShapes[amountOfShapes - 1] = s;
 
     if (shapes)
     {
@@ -70,11 +70,8 @@ std::string Figure::GetBoundingBox() const
                     }
                 }
 
-                if (tempCordsArr)
-                {
-                    delete[] tempCordsArr;
-                    tempCordsArr = nullptr;
-                }
+                delete[] tempCordsArr;
+                tempCordsArr = nullptr;
             }
         }
 
@@ -118,18 +115,22 @@ Figure::~Figure()
 /*
     Returns sorted array with n closest shapes
 */
-Shape **Figure::GetClosest(Shape *location, int n)
+Shape **Figure::GetClosest(const Shape &location, int n)
 {
-    if (amountOfShapes > 1)
-    {
-        RecursiveBubbleSort(*location, n, 0);
-    }
     Shape **closestShapes = new Shape *[n];
-
-    for (int i = 0; i < n; i++)
+    if (amountOfShapes > 1 && amountOfShapes >= n)
     {
-        closestShapes[i] = shapes[i];
+        RecursiveShapeSort(location, n, 0);
     }
+
+    if (n <= amountOfShapes)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            closestShapes[i] = shapes[i];
+        }
+    }
+
     return closestShapes;
 }
 
@@ -181,12 +182,12 @@ double Figure::DistanceToShape(const Shape &s1, const Shape &s2)
     Recursive version of Bubble sort
     Modified version of: https://www.geeksforgeeks.org/recursive-bubble-sort/
 
-    Compares distance with each shape in the shapes array to another shape(loc).
+    Compares distance with each shape in the figure's shape array to another shape(loc).
     Sorts the array n number of times.
 */
-void Figure::RecursiveBubbleSort(Shape &loc, int iterations, int currentIndex)
+void Figure::RecursiveShapeSort(const Shape &loc, int iterations, int currentIndex)
 {
-    if (currentIndex == (iterations)) // Return when we've reached the required amount of iterations
+    if (currentIndex == (iterations)) // Return once we've reached the required amount of iterations
     {
         return;
     }
@@ -196,17 +197,15 @@ void Figure::RecursiveBubbleSort(Shape &loc, int iterations, int currentIndex)
     for (int i = currentIndex; i < (amountOfShapes - 1); i++)
     {
         double otherDistance = DistanceToShape(*shapes[i + 1], loc);
-        if (currentDistance > otherDistance) 
+        if (currentDistance > otherDistance)
         {
             // Swap
-            Shape *temp = shapes[currentIndex];
-            shapes[currentIndex] = shapes[i + 1];
-            shapes[i + 1] = temp;
+            std::swap(shapes[currentIndex], shapes[i + 1]);
             currentDistance = DistanceToShape(*shapes[currentIndex], loc); // Update current distance
         }
     }
 
-    RecursiveBubbleSort(loc, iterations, (currentIndex + 1));
+    RecursiveShapeSort(loc, iterations, (currentIndex + 1));
 }
 
 int Figure::GetAmountOfShapes() const

@@ -89,14 +89,17 @@ int main(int argc, const char *argv[])
                 const int amountOfClosestShapes = 3; // Just used for the assignment
                 if (amountOfClosestShapes > 0 && fig.GetAmountOfShapes() >= amountOfClosestShapes)
                 {
-                    Shape **closestShapes = fig.GetClosest(firstShape, amountOfClosestShapes);
+                    Shape **closestShapes = fig.GetClosest(*firstShape, amountOfClosestShapes);
 
                     std::cout << "First shape: " << firstShape->CoordinatesToString() << '\n';
                     std::cout << amountOfClosestShapes << " closest shapes points" << '\n';
 
                     for (int i = 0; i < amountOfClosestShapes; i++)
                     {
-                        std::cout << (i + 1) << "| " << closestShapes[i]->CoordinatesToString() << '\n';
+                        if (closestShapes[i])
+                        {
+                            std::cout << (i + 1) << "| " << closestShapes[i]->CoordinatesToString() << '\n';
+                        }
                     }
 
                     delete[] closestShapes;
@@ -109,6 +112,10 @@ int main(int argc, const char *argv[])
 
                 delete firstShape;
                 firstShape = nullptr;
+            }
+            else
+            {
+                return 1;
             }
         }
         else

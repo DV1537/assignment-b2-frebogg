@@ -89,7 +89,7 @@ Shape &Shape::operator+(Shape &s)
 
 std::ostream &operator<<(std::ostream &out, const Shape &s)
 {
-  out << s.CoordinatesToString() << '\n';
+  out << s.CoordinatesToString();
   return out;
 }
 

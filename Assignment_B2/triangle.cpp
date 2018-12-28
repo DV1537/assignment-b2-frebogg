@@ -102,7 +102,7 @@ std::string Triangle::CoordinatesToString() const
     double x = round(cords[i].GetX() * 1000) / 1000;
     double y = round(cords[i].GetY() * 1000) / 1000;
     std::stringstream ss;
-    ss << "X: " << x << " Y: " << y << '\n';
+    ss << "X: " << x << " Y: " << y << " ";
     textToRet += ss.str();
   }
   return textToRet;

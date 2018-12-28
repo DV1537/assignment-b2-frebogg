@@ -12,9 +12,9 @@ public:
   ~Figure();
   std::string GetBoundingBox() const;
   void AddShape(Shape *s);
-  void RecursiveBubbleSort(Shape &loc, int iterations, int currentIndex);
+  void RecursiveShapeSort(const Shape &loc, int iterations, int currentIndex);
   int GetAmountOfShapes() const;
   double DistanceToShape(const Shape &s1, const Shape &s2);
-  Shape **GetClosest(Shape *location, int n);
+  Shape **GetClosest(const Shape &location, int n);
 };
 #endif
